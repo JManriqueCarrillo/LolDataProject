@@ -1,2 +1,11 @@
 <resources>
+
+    <!-- Errors -->
+    <string name="error_no_items_found">No items found</string>
+
+    <!-- Champion string -->
+
+    <!-- Accessibility strings -->
+    <string name="accessibility_champion_avatar">Champion avatar</string>
+
 </resources>

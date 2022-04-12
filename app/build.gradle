@@ -43,7 +43,7 @@ android {
             buildConfigField "Boolean", 'INT', 'false'
             buildConfigField "Boolean", 'PRO', 'false'
 
-            buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://raw.communitydragon.org/"'
             buildConfigField "String", "BASE_URL_SUMMONER", '""'
             applicationIdSuffix = '.mock'
             resValue "string", "app_name", "Lol Data Project - MCK"
@@ -55,7 +55,7 @@ android {
             buildConfigField "Boolean", 'INT', 'false'
             buildConfigField "Boolean", 'PRO', 'false'
 
-            buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://raw.communitydragon.org/"'
             buildConfigField "String", "BASE_URL_SUMMONER", '""'
             applicationIdSuffix = '.dev'
             resValue "string", "app_name", "Lol Data Project - DEV"
@@ -67,7 +67,7 @@ android {
             buildConfigField "Boolean", 'INT', 'true'
             buildConfigField "Boolean", 'PRO', 'false'
 
-            buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://raw.communitydragon.org/"'
             buildConfigField "String", "BASE_URL_SUMMONER", '""'
             applicationIdSuffix = '.int'
             resValue "string", "app_name", "Lol Data Project - INT"
@@ -79,7 +79,7 @@ android {
             buildConfigField "Boolean", 'INT', 'false'
             buildConfigField "Boolean", 'PRO', 'true'
 
-            buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://raw.communitydragon.org/"'
             buildConfigField "String", "BASE_URL_SUMMONER", '""'
             resValue "string", "app_name", "Lol Data Project - PRO"
         }
