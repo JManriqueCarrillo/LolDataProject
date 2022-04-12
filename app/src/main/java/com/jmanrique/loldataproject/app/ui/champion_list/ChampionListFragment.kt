@@ -39,13 +39,18 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
+        initObservers()
+        callAPI()
+    }
 
+    private fun initViews() {
         layoutManager = GridLayoutManager(context, 3)
         binding.championList.layoutManager = layoutManager
         binding.championList.adapter = championListAdapter
+    }
 
-        viewModel.getChampionSummary()
-
+    private fun initObservers() {
         viewModel.championsList.observe(this, {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -59,6 +64,10 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
                 }
             }
         })
+    }
+
+    private fun callAPI(){
+        viewModel.getChampionSummary()
     }
 
     override fun onQueryTextSubmit(p0: String?): Boolean {

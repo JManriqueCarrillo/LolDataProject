@@ -4,6 +4,7 @@
     <string name="error_no_items_found">No items found</string>
 
     <!-- Champion string -->
+    <string name="champion_list_title">Champions</string>
 
     <!-- Accessibility strings -->
     <string name="accessibility_champion_avatar">Champion avatar</string>
