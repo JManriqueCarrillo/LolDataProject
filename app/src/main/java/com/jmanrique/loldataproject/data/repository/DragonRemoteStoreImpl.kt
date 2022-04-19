@@ -2,6 +2,7 @@ package com.jmanrique.loldataproject.data.repository
 
 import com.jmanrique.loldataproject.domain.repository.DataStore
 import com.jmanrique.loldataproject.data.network.DragonAPI
+import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -13,4 +14,8 @@ class DragonRemoteStoreImpl @Inject constructor(
         dragonAPI.getChampionSummary().map { list ->
             list.map { it.toChampionSummary() }
         }
+
+    override fun getChampionDetail(championId: String): Single<ChampionDetail> =
+        dragonAPI.getChampionDetail(id = championId).map { it.toChampionDetail() }
+
 }

@@ -5,5 +5,9 @@ data class ChampionSummary(
     val alias: String,
     val name: String,
     val roles: List<String>,
-    val squarePortraitPath: String
+    val squarePortraitPath: String,
+    var showInfo: Boolean = false,
+    var isInfo: Boolean = false,
+    var title: String = "",
+    var shortBio: String = ""
 )

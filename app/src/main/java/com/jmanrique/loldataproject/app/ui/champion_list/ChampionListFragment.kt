@@ -8,7 +8,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.jmanrique.loldataproject.app.ui.base.BaseFragment
 import com.jmanrique.loldataproject.databinding.FragmentChampionListBinding
 import com.jmanrique.loldataproject.utils.Status
@@ -19,12 +19,15 @@ import javax.inject.Inject
 class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
     SearchView.OnQueryTextListener {
 
+    val NUMBER_COLUMNS = 3
+
     val viewModel: ChampionListViewModel by viewModels()
 
     @Inject
-    lateinit var championListAdapter: ChampionListAdapter
+    lateinit var adapterFactory: ChampionListAdapterFactory
+    private val championListAdapter by lazy { adapterFactory.create(NUMBER_COLUMNS) }
 
-    lateinit var layoutManager: LinearLayoutManager
+    lateinit var layoutManager: GridLayoutManager
 
     override fun inflateBinding(
         layoutInflater: LayoutInflater,
@@ -45,9 +48,21 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
     }
 
     private fun initViews() {
-        layoutManager = GridLayoutManager(context, 3)
+        layoutManager = GridLayoutManager(context, NUMBER_COLUMNS)
+        layoutManager.spanSizeLookup = object : SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (championListAdapter.data[position].isInfo) NUMBER_COLUMNS
+                else 1
+            }
+        }
         binding.championList.layoutManager = layoutManager
         binding.championList.adapter = championListAdapter
+        championListAdapter.numberColumns = NUMBER_COLUMNS
+        championListAdapter.onItemClick = { position, champion ->
+            if (!champion.showInfo) viewModel.getChampionDetail(champion.id.toString())
+            championListAdapter.addInfoElement(position, champion)
+            championListAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun initObservers() {
@@ -64,9 +79,23 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
                 }
             }
         })
+
+        viewModel.championDetail.observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    championListAdapter.addChampionInfo(it.data!!)
+                    championListAdapter.notifyDataSetChanged()
+                }
+                Status.ERROR -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                }
+                Status.LOADING -> {
+                }
+            }
+        })
     }
 
-    private fun callAPI(){
+    private fun callAPI() {
         viewModel.getChampionSummary()
     }
 

@@ -3,7 +3,9 @@ package com.jmanrique.loldataproject.app.ui.champion_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jmanrique.loldataproject.app.ui.base.BaseViewModel
+import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
+import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionDetailUseCase
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionSummaryUseCase
 import com.jmanrique.loldataproject.utils.Resource
 import com.jmanrique.loldataproject.utils.SingleLiveEvent
@@ -12,11 +14,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChampionListViewModel @Inject constructor(
-    private val getChampionSummaryUseCase: GetChampionSummaryUseCase
+    private val getChampionSummaryUseCase: GetChampionSummaryUseCase,
+    private val getChampionDetailUseCase: GetChampionDetailUseCase
 ) : BaseViewModel() {
 
-    private val _championsList = MutableLiveData<Resource<List<ChampionSummary>>>()
-    val championsList: LiveData<Resource<List<ChampionSummary>>> get() = _championsList
+    private val _championsList = MutableLiveData<Resource<MutableList<ChampionSummary>>>()
+    val championsList: LiveData<Resource<MutableList<ChampionSummary>>> get() = _championsList
+
+    private val _championDetail = MutableLiveData<Resource<ChampionDetail?>>()
+    val championDetail: LiveData<Resource<ChampionDetail?>> get() = _championDetail
 
     val showLoading = SingleLiveEvent<Boolean>().apply { value = false }
     val showEmpty = SingleLiveEvent<Boolean>().apply { value = false }
@@ -29,13 +35,26 @@ class ChampionListViewModel @Inject constructor(
                 _championsList.postValue(Resource.success(it
                     .filter { champion -> champion.id != -1 }
                     .sortedBy { champion -> champion.alias }
+                    .toMutableList()
                 ))
                 showLoading.value = false
             },
             onError = {
                 showEmpty.value = true
                 showLoading.value = false
-                _championsList.postValue(Resource.error("Something went wrong", emptyList()))
+                _championsList.postValue(Resource.error("Something went wrong", mutableListOf()))
+            })
+    }
+
+    fun getChampionDetail(championId: String) {
+        showLoading.value = true
+        subscribe(getChampionDetailUseCase.execute(championId),
+            onSuccess = {
+                _championDetail.postValue(Resource.success(it))
+                showLoading.value = false
+            }, onError = {
+                _championDetail.postValue(Resource.error("Something went wrong", null))
+                showLoading.value = false
             })
     }
 

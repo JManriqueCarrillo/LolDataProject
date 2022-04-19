@@ -10,7 +10,7 @@ class GetChampionSummaryUseCaseImpl @Inject constructor(
     private val dragonRepository: DragonRepository
 ): GetChampionSummaryUseCase {
 
-    override fun execute(aVoid: Void?): Single<List<ChampionSummary>> {
+    override fun execute(params: Void?): Single<List<ChampionSummary>> {
         return dragonRepository.getChampionSummary()
     }
 }
