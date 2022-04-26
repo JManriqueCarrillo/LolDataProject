@@ -21,6 +21,8 @@ class ChampionListViewModel @Inject constructor(
     private val _championsList = MutableLiveData<Resource<MutableList<ChampionSummary>>>()
     val championsList: LiveData<Resource<MutableList<ChampionSummary>>> get() = _championsList
 
+    private lateinit var _originalList: List<ChampionSummary>
+
     private val _championDetail = MutableLiveData<Resource<ChampionDetail?>>()
     val championDetail: LiveData<Resource<ChampionDetail?>> get() = _championDetail
 
@@ -32,11 +34,12 @@ class ChampionListViewModel @Inject constructor(
         showEmpty.value = false
         subscribe(getChampionSummaryUseCase.execute(null),
             onSuccess = {
-                _championsList.postValue(Resource.success(it
+                _originalList = it
                     .filter { champion -> champion.id != -1 }
                     .sortedBy { champion -> champion.alias }
                     .toMutableList()
-                ))
+
+                _championsList.postValue(Resource.success(_originalList as MutableList<ChampionSummary>))
                 showLoading.value = false
             },
             onError = {
@@ -56,6 +59,21 @@ class ChampionListViewModel @Inject constructor(
                 _championDetail.postValue(Resource.error("Something went wrong", null))
                 showLoading.value = false
             })
+    }
+
+    fun filterList(searchTerm: String) {
+        if (searchTerm.isNotEmpty()) {
+            _championsList.postValue(
+                Resource.success(
+                    _originalList.filter {
+                        it.name.uppercase().contains(searchTerm.uppercase())
+                    }.toMutableList()
+                )
+            )
+        } else {
+            if (_championsList.value?.data?.equals(_originalList) == false)
+                _championsList.postValue(Resource.success(_originalList as MutableList<ChampionSummary>))
+        }
     }
 
 }

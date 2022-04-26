@@ -1,18 +1,20 @@
 package com.jmanrique.loldataproject.app.ui.champion_list
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.SearchView
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import com.jmanrique.loldataproject.R
 import com.jmanrique.loldataproject.app.ui.base.BaseFragment
+import com.jmanrique.loldataproject.app.ui.main.MainActivity
 import com.jmanrique.loldataproject.databinding.FragmentChampionListBinding
 import com.jmanrique.loldataproject.utils.Status
+import com.jmanrique.loldataproject.utils.extensions.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_champion_list.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,6 +30,7 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
     private val championListAdapter by lazy { adapterFactory.create(NUMBER_COLUMNS) }
 
     lateinit var layoutManager: GridLayoutManager
+    private lateinit var searchTerm: String
 
     override fun inflateBinding(
         layoutInflater: LayoutInflater,
@@ -48,6 +51,9 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
     }
 
     private fun initViews() {
+        (activity as MainActivity).setSupportActionBar(binding.toolbar)
+        setHasOptionsMenu(true)
+
         layoutManager = GridLayoutManager(context, NUMBER_COLUMNS)
         layoutManager.spanSizeLookup = object : SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -99,12 +105,35 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
         viewModel.getChampionSummary()
     }
 
-    override fun onQueryTextSubmit(p0: String?): Boolean {
-        TODO("Not yet implemented")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_search, menu)
+        val search = menu.findItem(R.id.menuSearch)
+        val searchView = search?.actionView as androidx.appcompat.widget.SearchView
+        searchView.isSubmitButtonEnabled = true
+        searchView.setOnQueryTextListener(this)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onQueryTextChange(p0: String?): Boolean {
-        TODO("Not yet implemented")
+    override fun onQueryTextSubmit(p0: String?): Boolean {
+        hideKeyboard()
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        championListAdapter.unselectChampion()
+        championListAdapter.notifyDataSetChanged()
+
+        if (newText != null) searchTerm = newText
+        else filterList("")
+
+        if (searchTerm.isNotEmpty()) filterList(searchTerm)
+        else filterList("")
+
+        return true
+    }
+
+    private fun filterList(searchTerm: String){
+        viewModel.filterList(searchTerm)
     }
 
 }

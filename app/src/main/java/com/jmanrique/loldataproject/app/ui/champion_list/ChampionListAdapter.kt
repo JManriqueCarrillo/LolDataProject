@@ -129,7 +129,7 @@ class ChampionListAdapter @AssistedInject constructor(
             if (championInfoOpened != -1) data[championInfoOpened].showInfo = false
             championInfoOpened = championPosition
             champion.showInfo = true
-            infoOpened = newPosition
+            infoOpened = data.size.coerceAtMost(newPosition)
         }
     }
 
@@ -153,5 +153,13 @@ class ChampionListAdapter @AssistedInject constructor(
                     )
             )
         }
+    }
+
+    fun unselectChampion() {
+        if (infoOpened != -1) {
+            data.removeAt(infoOpened)
+            infoOpened = -1
+        }
+        this.data.find{ it.showInfo }?.showInfo = false
     }
 }
