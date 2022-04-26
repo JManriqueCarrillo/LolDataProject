@@ -22,6 +22,8 @@ class ChampionListViewModel @Inject constructor(
     val championsList: LiveData<Resource<MutableList<ChampionSummary>>> get() = _championsList
 
     private lateinit var _originalList: List<ChampionSummary>
+    private var _currentQuery: String = ""
+    fun currentQuery() = _currentQuery
 
     private val _championDetail = MutableLiveData<Resource<ChampionDetail?>>()
     val championDetail: LiveData<Resource<ChampionDetail?>> get() = _championDetail
@@ -62,11 +64,12 @@ class ChampionListViewModel @Inject constructor(
     }
 
     fun filterList(searchTerm: String) {
-        if (searchTerm.isNotEmpty()) {
+        _currentQuery = searchTerm
+        if (_currentQuery.isNotEmpty()) {
             _championsList.postValue(
                 Resource.success(
                     _originalList.filter {
-                        it.name.uppercase().contains(searchTerm.uppercase())
+                        it.name.uppercase().contains(_currentQuery.uppercase())
                     }.toMutableList()
                 )
             )

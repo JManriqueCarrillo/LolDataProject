@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/championListFragment"
         android:name="com.jmanrique.loldataproject.app.ui.champion_list.ChampionListFragment"
-        android:label="ChampionListFragment" />
+        android:label="ChampionListFragment" >
+        <action
+            android:id="@+id/action_championListFragment_to_championDetailFragment"
+            app:destination="@id/championDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/championDetailFragment"
+        android:name="com.jmanrique.loldataproject.app.ui.champion_detail.ChampionDetailFragment"
+        android:label="ChampionDetailFragment" />
 </navigation>

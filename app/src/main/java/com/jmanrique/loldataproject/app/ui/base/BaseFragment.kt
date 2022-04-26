@@ -10,15 +10,19 @@ import androidx.fragment.app.Fragment
 abstract class BaseFragment<DB>: Fragment() where DB: ViewDataBinding {
 
     lateinit var binding: DB
+    var _view: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = inflateBinding(layoutInflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        bindViewToModel()
+        if(_view == null) {
+            binding = inflateBinding(layoutInflater, container, false)
+            binding.lifecycleOwner = viewLifecycleOwner
+            bindViewToModel()
+            _view = binding.root
+        }
         return binding.root
     }
 

@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="League of Legends Data App"
+                android:text="LoL Data App"
                 android:textAllCaps="true"
                 android:layout_gravity="center"
                 android:fontFamily="@font/friz_quadrata"

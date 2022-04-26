@@ -29,6 +29,7 @@ class ChampionListAdapter @AssistedInject constructor(
 
     var data: MutableList<ChampionSummary> = mutableListOf()
     var onItemClick: ((Int, ChampionSummary) -> Unit)? = null
+    var onReadMoreClick: ((ChampionSummary) -> Unit)? = null
     var championInfoOpened = -1
     var infoOpened = -1
 
@@ -98,9 +99,6 @@ class ChampionListAdapter @AssistedInject constructor(
                     colorFilter = champion.showInfo
             )
             binding.championListName.text = champion.name
-
-//                binding.championListAvatarHover.visibleOrGone(champion.showInfo)
-
         }
     }
 
@@ -109,6 +107,9 @@ class ChampionListAdapter @AssistedInject constructor(
         fun bind(champion: ChampionSummary) {
             binding.championInfoName.text = "${champion.name} - ${champion.title}"
             binding.championInfoShortBio.text = champion.shortBio
+            binding.championInfoReadMore.setOnClickListener {
+                onReadMoreClick?.invoke(champion)
+            }
         }
     }
 

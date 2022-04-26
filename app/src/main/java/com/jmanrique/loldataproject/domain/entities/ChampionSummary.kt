@@ -1,5 +1,7 @@
 package com.jmanrique.loldataproject.domain.entities
 
+import java.io.Serializable
+
 data class ChampionSummary(
     val id: Int,
     val alias: String,
@@ -10,7 +12,7 @@ data class ChampionSummary(
     var isInfo: Boolean = false,
     var title: String = "",
     var shortBio: String = ""
-) {
+) : Serializable {
     override fun hashCode(): Int =
         if (isInfo) super.hashCode()
         else this.id.hashCode()
