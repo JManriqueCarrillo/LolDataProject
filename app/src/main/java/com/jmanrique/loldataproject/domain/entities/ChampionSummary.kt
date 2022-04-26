@@ -10,4 +10,10 @@ data class ChampionSummary(
     var isInfo: Boolean = false,
     var title: String = "",
     var shortBio: String = ""
-)
+) {
+    override fun hashCode(): Int =
+        if (isInfo) super.hashCode()
+        else this.id.hashCode()
+
+
+}

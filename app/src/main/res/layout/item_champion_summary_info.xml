@@ -14,6 +14,7 @@
         android:gravity="center"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Kindred" />
@@ -22,13 +23,24 @@
         android:id="@+id/champion_info_short_bio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="left"
-        android:textSize="16sp"
         android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:maxLines="5"
+        android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/champion_info_name"
-        tools:text="Kindred" />
+        tools:text="@tools:sample/lorem/random" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_read_more"
+        style="?attr/materialButtonOutlinedStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/champion_info_short_bio" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

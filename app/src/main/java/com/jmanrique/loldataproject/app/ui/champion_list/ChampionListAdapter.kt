@@ -3,6 +3,7 @@ package com.jmanrique.loldataproject.app.ui.champion_list
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.jmanrique.loldataproject.R
 import com.jmanrique.loldataproject.databinding.ItemChampionSummaryBinding
@@ -11,13 +12,15 @@ import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 import com.jmanrique.loldataproject.utils.extensions.getAvatarUrl
 import com.jmanrique.loldataproject.utils.extensions.loadUrl
+import com.jmanrique.loldataproject.utils.extensions.visibleOrGone
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+import dagger.hilt.android.qualifiers.ActivityContext
 
-class ChampionListAdapter @AssistedInject constructor(@ApplicationContext val context: Context, @Assisted var numberColumns: Int) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChampionListAdapter @AssistedInject constructor(
+        @ActivityContext val context: Context,
+        @Assisted var numberColumns: Int) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class CHAMPION_SUMMARY_VIEW_TYPE(val value: Int) {
         CHAMPION(0),
@@ -29,24 +32,28 @@ class ChampionListAdapter @AssistedInject constructor(@ApplicationContext val co
     var championInfoOpened = -1
     var infoOpened = -1
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             CHAMPION_SUMMARY_VIEW_TYPE.CHAMPION.value -> {
                 return ChampionViewHolder(
-                    ItemChampionSummaryBinding.inflate(
-                        LayoutInflater.from(context),
-                        parent,
-                        false
-                    )
+                        ItemChampionSummaryBinding.inflate(
+                                LayoutInflater.from(context),
+                                parent,
+                                false
+                        )
                 )
             }
             CHAMPION_SUMMARY_VIEW_TYPE.INFO.value -> {
                 return InfoViewHolder(
-                    ItemChampionSummaryInfoBinding.inflate(
-                        LayoutInflater.from(context),
-                        parent,
-                        false
-                    )
+                        ItemChampionSummaryInfoBinding.inflate(
+                                LayoutInflater.from(context),
+                                parent,
+                                false
+                        )
                 )
             }
             else -> throw IllegalArgumentException("Bad viewTypeHolder")
@@ -78,21 +85,27 @@ class ChampionListAdapter @AssistedInject constructor(@ApplicationContext val co
 
     }
 
+    override fun getItemId(position: Int): Long = data[position].hashCode().toLong()
+
     override fun getItemCount(): Int = data.size
 
     inner class ChampionViewHolder(private val binding: ItemChampionSummaryBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+            RecyclerView.ViewHolder(binding.root) {
         fun bind(champion: ChampionSummary) {
             binding.championListAvatar.loadUrl(
-                getAvatarUrl(champion.id.toString()),
-                R.drawable.champion_avatar_placeholder
+                    url = getAvatarUrl(champion.id.toString()),
+                    placeholder = R.drawable.champion_avatar_placeholder,
+                    colorFilter = champion.showInfo
             )
             binding.championListName.text = champion.name
+
+//                binding.championListAvatarHover.visibleOrGone(champion.showInfo)
+
         }
     }
 
     inner class InfoViewHolder(private val binding: ItemChampionSummaryInfoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+            RecyclerView.ViewHolder(binding.root) {
         fun bind(champion: ChampionSummary) {
             binding.championInfoName.text = "${champion.name} - ${champion.title}"
             binding.championInfoShortBio.text = champion.shortBio
@@ -101,7 +114,9 @@ class ChampionListAdapter @AssistedInject constructor(@ApplicationContext val co
 
     fun addInfoElement(position: Int, champion: ChampionSummary) {
         val championPosition =
-            if (infoOpened != -1 && infoOpened < position) position - 1 else position
+                if (infoOpened != -1 && infoOpened < position) position - 1 else position
+
+        //If we click on already champion info opened
         if (infoOpened != -1) {
             data.removeAt(infoOpened)
             infoOpened = -1
@@ -115,41 +130,28 @@ class ChampionListAdapter @AssistedInject constructor(@ApplicationContext val co
             championInfoOpened = championPosition
             champion.showInfo = true
             infoOpened = newPosition
-//            data.add(
-//                newPosition,
-//                ChampionSummary(
-//                    id = champion.id,
-//                    alias = champion.alias,
-//                    name = champion.name,
-//                    roles = champion.roles,
-//                    squarePortraitPath = champion.squarePortraitPath,
-//                    showInfo = true,
-//                    isInfo = true,
-//                    title = champion.title,
-//                    shortBio = champion.shortBio
-//                )
-//            )
         }
     }
 
-    fun addChampionInfo(champion: ChampionDetail){
-        data[championInfoOpened].title = champion.title
-        data[championInfoOpened].shortBio = champion.shortBio
+    fun addChampionInfo(champion: ChampionDetail) {
+        if (championInfoOpened != -1) {
+            data[championInfoOpened].title = champion.title
+            data[championInfoOpened].shortBio = champion.shortBio
 
-        data.add(
-            infoOpened,
-            ChampionSummary(
-                id = champion.id,
-                alias = champion.alias,
-                name = champion.name,
-                roles = champion.roles,
-                squarePortraitPath = champion.squarePortraitPath,
-                showInfo = true,
-                isInfo = true,
-                title = champion.title,
-                shortBio = champion.shortBio
+            data.add(
+                    infoOpened,
+                    ChampionSummary(
+                            id = champion.id,
+                            alias = champion.alias,
+                            name = champion.name,
+                            roles = champion.roles,
+                            squarePortraitPath = champion.squarePortraitPath,
+                            showInfo = true,
+                            isInfo = true,
+                            title = champion.title,
+                            shortBio = champion.shortBio
+                    )
             )
-        )
-
+        }
     }
 }

@@ -6,6 +6,9 @@
     <!-- Champion string -->
     <string name="champion_list_title">Champions</string>
 
+    <!-- Buttons -->
+    <string name="btn_read_more">Read More</string>
+
     <!-- Accessibility strings -->
     <string name="accessibility_champion_avatar">Champion avatar</string>
 

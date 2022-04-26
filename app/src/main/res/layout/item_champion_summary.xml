@@ -30,30 +30,12 @@
             android:gravity="center"
             android:lines="2"
             android:textSize="20sp"
-            android:textStyle="normal"
+            android:textAllCaps="true"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/champion_list_avatar"
             tools:text="Character name" />
-
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/expandedLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:padding="10dp"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/champion_list_name">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non purus euismod, pellentesque lorem sed, sollicitudin dui. Nulla scelerisque sem vitae porttitor laoreet. Vestibulum id arcu elit. Nullam dignissim felis id neque pulvinar, eget sagittis turpis varius. Nam consequat nulla in massa imperdiet pellentesque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque sed dolor ultrices, condimentum odio at, interdum arcu. Donec quis congue metus. Nunc eu ante velit. Pellentesque dolor tortor, hendrerit ac elit ut, ultrices lobortis ipsum."-->
-<!--                android:lines="5"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
