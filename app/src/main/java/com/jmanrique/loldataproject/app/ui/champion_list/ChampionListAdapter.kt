@@ -159,6 +159,7 @@ class ChampionListAdapter @AssistedInject constructor(
         if (infoOpened != -1) {
             data.removeAt(infoOpened)
             infoOpened = -1
+            championInfoOpened = -1
         }
         this.data.find{ it.showInfo }?.showInfo = false
     }
