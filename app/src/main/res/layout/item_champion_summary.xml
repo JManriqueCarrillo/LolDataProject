@@ -29,7 +29,7 @@
             android:fontFamily="@font/friz_quadrata"
             android:gravity="center"
             android:lines="2"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textAllCaps="true"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"

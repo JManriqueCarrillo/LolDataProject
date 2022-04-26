@@ -68,6 +68,7 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
             if (!champion.showInfo) viewModel.getChampionDetail(champion.id.toString())
             championListAdapter.addInfoElement(position, champion)
             championListAdapter.notifyDataSetChanged()
+            hideKeyboard()
         }
     }
 

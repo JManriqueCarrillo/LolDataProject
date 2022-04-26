@@ -14,12 +14,4 @@ data class WSChampionSummary(
     val roles: List<String>,
     @SerializedName("squarePortraitPath")
     val squarePortraitPath: String
-) {
-    fun toChampionSummary() = ChampionSummary(
-        id = this.id,
-        alias = this.alias,
-        name = this.name,
-        roles = this.roles,
-        squarePortraitPath = this.squarePortraitPath
-    )
-}
+)
