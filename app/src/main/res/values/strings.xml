@@ -1,2 +1,16 @@
 <resources>
+
+    <!-- Errors -->
+    <string name="error_no_items_found">No items found</string>
+
+    <!-- Champion string -->
+    <string name="champion_list_title">Champions</string>
+
+    <!-- Buttons -->
+    <string name="btn_read_more">Read More</string>
+    <string name="btn_search_by_name">Search by name</string>
+
+    <!-- Accessibility strings -->
+    <string name="accessibility_champion_avatar">Champion avatar</string>
+
 </resources>

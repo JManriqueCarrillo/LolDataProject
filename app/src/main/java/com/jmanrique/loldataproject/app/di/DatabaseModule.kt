@@ -2,6 +2,7 @@ package com.jmanrique.loldataproject.app.di
 
 import android.content.Context
 import androidx.room.Room
+import com.jmanrique.loldataproject.data.local.DragonDAO
 import com.jmanrique.loldataproject.data.local.database.DragonDatabase
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
-      @Singleton
+    @Singleton
+    @Provides
+    fun provideChampionDao(database: DragonDatabase): DragonDAO = database.getDragonDao()
+
+    @Singleton
     @Provides
     fun providesDatabase(@ApplicationContext appContext: Context): DragonDatabase {
         return Room.databaseBuilder(
