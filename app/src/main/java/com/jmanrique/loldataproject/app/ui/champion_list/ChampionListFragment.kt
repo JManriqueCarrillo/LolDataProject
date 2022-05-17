@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
@@ -81,7 +82,7 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
         championListAdapter.numberColumns = NUMBER_COLUMNS
     }
 
-    private fun initListeners(){
+    private fun initListeners() {
         championListAdapter.onItemClick = { position, champion ->
             if (!champion.showInfo) viewModel.getChampionDetail(champion.id.toString())
             championListAdapter.addInfoElement(position, champion)
@@ -101,7 +102,8 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
                     championListAdapter.notifyDataSetChanged()
                 }
                 Status.ERROR -> {
-                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                    if (view?.isVisible == true)
+                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
                 Status.LOADING -> {
                 }
@@ -115,7 +117,8 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
                     championListAdapter.notifyDataSetChanged()
                 }
                 Status.ERROR -> {
-                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                    if (view?.isVisible == true)
+                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
                 Status.LOADING -> {
                 }
@@ -134,12 +137,13 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
 
         //Restore last query (for example when navigating back from champions detail fragment or orientation changes)
         val pendingQuery = viewModel.currentQuery()
-        if(pendingQuery.isNotEmpty()){
+        if (pendingQuery.isNotEmpty()) {
             searchItem.expandActionView()
             searchView.setQuery(pendingQuery, false)
             viewModel.filterList(pendingQuery)
             searchView.clearFocus()
         }
+
         searchView.isSubmitButtonEnabled = true
         searchView.setOnQueryTextListener(this)
         super.onCreateOptionsMenu(menu, inflater)
