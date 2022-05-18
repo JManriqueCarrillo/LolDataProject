@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "Annie",
+    "alias": "Annie",
+    "squarePortraitPath": "/lol-game-data/assets/v1/champion-icons/1.png",
+    "roles": [
+      "mage"
+    ],
+    "title": "",
+    "shortBio": ""
+  },
+  {
+    "id": 2,
+    "name": "Olaf",
+    "alias": "Olaf",
+    "squarePortraitPath": "/lol-game-data/assets/v1/champion-icons/2.png",
+    "roles": [
+      "fighter",
+      "tank"
+    ],
+    "title": "",
+    "shortBio": ""
+  }
+]
