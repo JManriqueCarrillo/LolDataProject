@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 abstract class BaseViewModel : ViewModel() {
 
-    val disposables = CompositeDisposable()
+    private val disposables = CompositeDisposable()
 
     protected fun <T> subscribe(
         observable: Single<T>,
