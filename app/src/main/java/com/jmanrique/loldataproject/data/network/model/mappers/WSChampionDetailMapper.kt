@@ -4,7 +4,7 @@ import com.jmanrique.loldataproject.data.network.model.championDetail.WSChampion
 import com.jmanrique.loldataproject.domain.base.mapper.BaseSingleMapper
 import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 
-class ChampionDetailMapper : BaseSingleMapper<WSChampionDetail, ChampionDetail>() {
+class WSChampionDetailMapper : BaseSingleMapper<WSChampionDetail, ChampionDetail>() {
     override fun transform(dataModel: WSChampionDetail) =
         ChampionDetail(
             alias = dataModel.alias,

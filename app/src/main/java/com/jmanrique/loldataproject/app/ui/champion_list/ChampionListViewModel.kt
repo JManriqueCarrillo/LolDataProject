@@ -7,6 +7,7 @@ import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionDetailUseCase
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionSummaryUseCase
+import com.jmanrique.loldataproject.domain.usecases.champions.SaveChampionSummaryUseCase
 import com.jmanrique.loldataproject.utils.Resource
 import com.jmanrique.loldataproject.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChampionListViewModel @Inject constructor(
     private val getChampionSummaryUseCase: GetChampionSummaryUseCase,
-    private val getChampionDetailUseCase: GetChampionDetailUseCase
+    private val getChampionDetailUseCase: GetChampionDetailUseCase,
+    private val saveChampionSummaryUseCase: SaveChampionSummaryUseCase
 ) : BaseViewModel() {
 
     private val _championsList = MutableLiveData<Resource<MutableList<ChampionSummary>>>()
@@ -40,6 +42,10 @@ class ChampionListViewModel @Inject constructor(
                     .toMutableList()
 
                 _championsList.postValue(Resource.success(_originalList as MutableList<ChampionSummary>))
+
+                //TODO Check if the same patch
+                saveChampionSummaryUseCase.execute(_originalList)
+
                 showLoading.value = false
             },
             onError = {

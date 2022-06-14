@@ -2,8 +2,10 @@ package com.jmanrique.loldataproject.app.di
 
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionDetailUseCase
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionSummaryUseCase
+import com.jmanrique.loldataproject.domain.usecases.champions.SaveChampionSummaryUseCase
 import com.jmanrique.loldataproject.domain.usecases.champions.impl.GetChampionDetailUseCaseImpl
 import com.jmanrique.loldataproject.domain.usecases.champions.impl.GetChampionSummaryUseCaseImpl
+import com.jmanrique.loldataproject.domain.usecases.champions.impl.SaveChampionSummaryUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,4 +23,8 @@ class UseCaseModule {
     @Singleton
     @Provides
     fun providesGetChampionDetailUseCase(impl: GetChampionDetailUseCaseImpl): GetChampionDetailUseCase = impl
+
+    @Singleton
+    @Provides
+    fun providesSaveChampionSummaryUseCase(impl: SaveChampionSummaryUseCaseImpl): SaveChampionSummaryUseCase = impl
 }
