@@ -8,6 +8,10 @@ import com.jmanrique.loldataproject.domain.usecases.champions.impl.GetChampionSu
 import com.jmanrique.loldataproject.domain.usecases.champions.impl.SaveChampionSummaryUseCaseImpl
 import com.jmanrique.loldataproject.domain.usecases.metadata.GetCurrentPatchUseCase
 import com.jmanrique.loldataproject.domain.usecases.metadata.impl.GetCurrentPatchUseCaseImpl
+import com.jmanrique.loldataproject.domain.usecases.preferences.GetCurrentPatchFromPreferences
+import com.jmanrique.loldataproject.domain.usecases.preferences.SetCurrentPatchToPreferences
+import com.jmanrique.loldataproject.domain.usecases.preferences.impl.GetCurrentPatchFromPreferencesImpl
+import com.jmanrique.loldataproject.domain.usecases.preferences.impl.SetCurrentPatchToPreferencesImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,17 +24,31 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetCurrentPatchUseCase(impl: GetCurrentPatchUseCaseImpl): GetCurrentPatchUseCase = impl
+    fun provideGetCurrentPatchUseCase(impl: GetCurrentPatchUseCaseImpl): GetCurrentPatchUseCase =
+        impl
 
     @Singleton
     @Provides
-    fun provideGetChampionSummaryUseCase(impl: GetChampionSummaryUseCaseImpl): GetChampionSummaryUseCase = impl
+    fun provideGetCurrentPatchFromPreferencesUseCase(impl: GetCurrentPatchFromPreferencesImpl): GetCurrentPatchFromPreferences =
+        impl
 
     @Singleton
     @Provides
-    fun providesGetChampionDetailUseCase(impl: GetChampionDetailUseCaseImpl): GetChampionDetailUseCase = impl
+    fun providesSetCurrentPatchToPreferences(impl: SetCurrentPatchToPreferencesImpl): SetCurrentPatchToPreferences =
+        impl
 
     @Singleton
     @Provides
-    fun providesSaveChampionSummaryUseCase(impl: SaveChampionSummaryUseCaseImpl): SaveChampionSummaryUseCase = impl
+    fun provideGetChampionSummaryUseCase(impl: GetChampionSummaryUseCaseImpl): GetChampionSummaryUseCase =
+        impl
+
+    @Singleton
+    @Provides
+    fun providesGetChampionDetailUseCase(impl: GetChampionDetailUseCaseImpl): GetChampionDetailUseCase =
+        impl
+
+    @Singleton
+    @Provides
+    fun providesSaveChampionSummaryUseCase(impl: SaveChampionSummaryUseCaseImpl): SaveChampionSummaryUseCase =
+        impl
 }
