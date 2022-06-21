@@ -6,6 +6,8 @@ import com.jmanrique.loldataproject.domain.usecases.champions.SaveChampionSummar
 import com.jmanrique.loldataproject.domain.usecases.champions.impl.GetChampionDetailUseCaseImpl
 import com.jmanrique.loldataproject.domain.usecases.champions.impl.GetChampionSummaryUseCaseImpl
 import com.jmanrique.loldataproject.domain.usecases.champions.impl.SaveChampionSummaryUseCaseImpl
+import com.jmanrique.loldataproject.domain.usecases.metadata.GetCurrentPatchUseCase
+import com.jmanrique.loldataproject.domain.usecases.metadata.impl.GetCurrentPatchUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +17,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCaseModule {
+
+    @Singleton
+    @Provides
+    fun provideGetCurrentPatchUseCase(impl: GetCurrentPatchUseCaseImpl): GetCurrentPatchUseCase = impl
 
     @Singleton
     @Provides

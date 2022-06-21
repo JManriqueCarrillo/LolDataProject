@@ -103,6 +103,7 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
     }
 
     private fun callAPI() {
+        viewModel.getCurrentPatch()
         viewModel.getChampionSummary()
     }
 

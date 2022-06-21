@@ -14,6 +14,8 @@ class DefaultRepository @Inject constructor(
     private val remoteStore: DragonRemoteStoreImpl
 ) : DragonRepository {
 
+    override fun getCurrentPatch(): Single<String> = remoteStore.getContentMetadata()
+
     override fun getChampionSummary(): Single<List<ChampionSummary>> {
         return if (shouldFetch()) {
             remoteStore.getChampionSummary()
@@ -21,7 +23,6 @@ class DefaultRepository @Inject constructor(
             localStore.getChampionSummary()
         }
     }
-
 
     override fun getChampionDetail(championId: String): Single<ChampionDetail> {
         return remoteStore.getChampionDetail(championId)

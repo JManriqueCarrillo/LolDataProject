@@ -7,6 +7,8 @@ import io.reactivex.rxjava3.core.Single
 
 interface DragonRepository {
 
+    fun getCurrentPatch(): Single<String>
+
     fun saveChampionSummary(data: List<ChampionSummary>): Completable
 
     fun getChampionSummary(): Single<List<ChampionSummary>>

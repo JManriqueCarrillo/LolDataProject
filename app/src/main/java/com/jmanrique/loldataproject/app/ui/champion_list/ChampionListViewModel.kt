@@ -9,6 +9,7 @@ import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionDetailUseCase
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionSummaryUseCase
 import com.jmanrique.loldataproject.domain.usecases.champions.SaveChampionSummaryUseCase
+import com.jmanrique.loldataproject.domain.usecases.metadata.GetCurrentPatchUseCase
 import com.jmanrique.loldataproject.utils.Resource
 import com.jmanrique.loldataproject.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChampionListViewModel @Inject constructor(
+    private val getCurrentPatchUseCase: GetCurrentPatchUseCase,
     private val getChampionSummaryUseCase: GetChampionSummaryUseCase,
     private val getChampionDetailUseCase: GetChampionDetailUseCase,
     private val saveChampionSummaryUseCase: SaveChampionSummaryUseCase
@@ -32,6 +34,16 @@ class ChampionListViewModel @Inject constructor(
     val showLoading = SingleLiveEvent<Boolean>().apply { value = false }
     val showEmpty = SingleLiveEvent<Boolean>().apply { value = false }
 
+    fun getCurrentPatch() {
+        showLoading.value = true
+        subscribe(getCurrentPatchUseCase.execute(null),
+            onSuccess = {
+                Log.d("PATCH", it)
+            }, onError = {
+
+            })
+    }
+
     fun getChampionSummary() {
         showLoading.value = true
         showEmpty.value = false
@@ -45,10 +57,10 @@ class ChampionListViewModel @Inject constructor(
                 _championsList.postValue(Resource.success(_originalList as MutableList<ChampionSummary>))
 
                 //TODO Check if the same patch
-                subscribe(saveChampionSummaryUseCase.execute(_originalList),{
+                subscribe(saveChampionSummaryUseCase.execute(_originalList), {
                     Log.d("CHAMPION", "Success")
-                }, {
-                    error -> Log.d("CHAMPION", error.message!!)
+                }, { error ->
+                    Log.d("CHAMPION", error.message!!)
                 })
 
                 showLoading.value = false
