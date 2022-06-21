@@ -1,5 +1,6 @@
 package com.jmanrique.loldataproject.app.ui.champion_list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jmanrique.loldataproject.app.ui.base.BaseViewModel
@@ -7,6 +8,7 @@ import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionDetailUseCase
 import com.jmanrique.loldataproject.domain.usecases.champions.GetChampionSummaryUseCase
+import com.jmanrique.loldataproject.domain.usecases.champions.SaveChampionSummaryUseCase
 import com.jmanrique.loldataproject.utils.Resource
 import com.jmanrique.loldataproject.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChampionListViewModel @Inject constructor(
     private val getChampionSummaryUseCase: GetChampionSummaryUseCase,
-    private val getChampionDetailUseCase: GetChampionDetailUseCase
+    private val getChampionDetailUseCase: GetChampionDetailUseCase,
+    private val saveChampionSummaryUseCase: SaveChampionSummaryUseCase
 ) : BaseViewModel() {
 
     private val _championsList = MutableLiveData<Resource<MutableList<ChampionSummary>>>()
@@ -40,6 +43,14 @@ class ChampionListViewModel @Inject constructor(
                     .toMutableList()
 
                 _championsList.postValue(Resource.success(_originalList as MutableList<ChampionSummary>))
+
+                //TODO Check if the same patch
+                subscribe(saveChampionSummaryUseCase.execute(_originalList),{
+                    Log.d("CHAMPION", "Success")
+                }, {
+                    error -> Log.d("CHAMPION", error.message!!)
+                })
+
                 showLoading.value = false
             },
             onError = {

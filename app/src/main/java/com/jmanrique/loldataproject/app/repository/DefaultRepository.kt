@@ -5,6 +5,7 @@ import com.jmanrique.loldataproject.data.repository.DragonRemoteStoreImpl
 import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 import com.jmanrique.loldataproject.domain.repository.DragonRepository
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
@@ -14,13 +15,31 @@ class DefaultRepository @Inject constructor(
 ) : DragonRepository {
 
     override fun getChampionSummary(): Single<List<ChampionSummary>> {
-        //TODO Check if DB has data
-        return remoteStore.getChampionSummary()
+        return if (shouldFetch()) {
+            remoteStore.getChampionSummary()
+        } else {
+            localStore.getChampionSummary()
+        }
     }
+
 
     override fun getChampionDetail(championId: String): Single<ChampionDetail> {
         return remoteStore.getChampionDetail(championId)
     }
 
+    override fun saveChampionSummary(data: List<ChampionSummary>): Completable =
+        localStore.saveChampionSummary(data)
+
+    private fun shouldFetch(): Boolean {
+        var shouldFetch = true
+
+        localStore.getChampionSummary()
+            .subscribe { list ->
+                if (!list.isNullOrEmpty())
+                    shouldFetch = false
+            }
+
+        return shouldFetch
+    }
 
 }

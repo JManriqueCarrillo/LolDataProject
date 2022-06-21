@@ -4,7 +4,7 @@ import com.jmanrique.loldataproject.data.network.model.championSummary.WSChampio
 import com.jmanrique.loldataproject.domain.base.mapper.BaseSingleMapper
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 
-class ChampionSummaryMapper : BaseSingleMapper<List<WSChampionSummary>, List<ChampionSummary>>() {
+class WSChampionSummaryMapper : BaseSingleMapper<List<WSChampionSummary>, List<ChampionSummary>>() {
     override fun transform(dataModel: List<WSChampionSummary>) = dataModel.map {
         ChampionSummary(
             id = it.id,
