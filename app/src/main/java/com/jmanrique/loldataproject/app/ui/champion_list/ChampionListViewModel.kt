@@ -1,5 +1,6 @@
 package com.jmanrique.loldataproject.app.ui.champion_list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jmanrique.loldataproject.app.ui.base.BaseViewModel
@@ -44,7 +45,11 @@ class ChampionListViewModel @Inject constructor(
                 _championsList.postValue(Resource.success(_originalList as MutableList<ChampionSummary>))
 
                 //TODO Check if the same patch
-                saveChampionSummaryUseCase.execute(_originalList)
+                subscribe(saveChampionSummaryUseCase.execute(_originalList),{
+                    Log.d("CHAMPION", "Success")
+                }, {
+                    error -> Log.d("CHAMPION", error.message!!)
+                })
 
                 showLoading.value = false
             },

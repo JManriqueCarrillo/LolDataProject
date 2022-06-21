@@ -6,7 +6,6 @@ import com.jmanrique.loldataproject.domain.entities.ChampionDetail
 import com.jmanrique.loldataproject.domain.entities.ChampionSummary
 import com.jmanrique.loldataproject.domain.repository.DragonRepository
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
@@ -33,10 +32,13 @@ class DefaultRepository @Inject constructor(
 
     private fun shouldFetch(): Boolean {
         var shouldFetch = true
-        localStore.getChampionSummary().map {
-            if (!it.isNullOrEmpty())
-                shouldFetch = false
-        }
+
+        localStore.getChampionSummary()
+            .subscribe { list ->
+                if (!list.isNullOrEmpty())
+                    shouldFetch = false
+            }
+
         return shouldFetch
     }
 

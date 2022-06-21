@@ -26,7 +26,7 @@ class DatabaseModule {
             appContext,
             DragonDatabase::class.java,
             "database"
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
 }
