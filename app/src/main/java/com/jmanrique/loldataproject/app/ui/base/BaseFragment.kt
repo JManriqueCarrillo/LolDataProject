@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.jmanrique.loldataproject.app.ui.common.fragments.LoadingFragment
 
-abstract class BaseFragment<DB>: Fragment() where DB: ViewDataBinding {
+abstract class BaseFragment<DB>: LoadingFragment() where DB: ViewDataBinding {
 
     lateinit var binding: DB
 
@@ -19,6 +20,10 @@ abstract class BaseFragment<DB>: Fragment() where DB: ViewDataBinding {
         binding = inflateBinding(layoutInflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         bindViewToModel()
+        val fragmentTransaction = childFragmentManager.beginTransaction()
+        fragmentTransaction.add(LoadingFragment(), "Loading")
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
         return binding.root
     }
 
@@ -29,5 +34,16 @@ abstract class BaseFragment<DB>: Fragment() where DB: ViewDataBinding {
          * Bind view components to model provider (ViewModel itself / LiveData) via binding (view is not created)
          */
     }
+
+    open fun showLoading(msg: String?){
+        //TODO Adapt loading view to show a message
+        showLoadingView()
+    }
+
+    open fun hideLoading(){
+        hideLoadingView()
+    }
+
+
 
 }

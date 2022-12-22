@@ -33,8 +33,8 @@ class ChampionListViewModel @Inject constructor(
     val showEmpty = SingleLiveEvent<Boolean>().apply { value = false }
 
     fun getChampionSummary() {
-        showLoading.value = true
         showEmpty.value = false
+        _championsList.postValue(Resource.loading())
         subscribe(getChampionSummaryUseCase.execute(null),
             onSuccess = {
                 _originalList = it
@@ -51,11 +51,9 @@ class ChampionListViewModel @Inject constructor(
                     error -> Log.d("CHAMPION", error.message!!)
                 })
 
-                showLoading.value = false
             },
             onError = {
                 showEmpty.value = true
-                showLoading.value = false
                 _championsList.postValue(Resource.error("Something went wrong", mutableListOf()))
             })
     }

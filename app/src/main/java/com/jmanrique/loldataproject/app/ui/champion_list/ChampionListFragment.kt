@@ -76,13 +76,16 @@ class ChampionListFragment : BaseFragment<FragmentChampionListBinding>(),
         viewModel.championsList.observe(this, {
             when (it.status) {
                 Status.SUCCESS -> {
+                    hideLoadingView()
                     championListAdapter.data = it.data!!
                     championListAdapter.notifyDataSetChanged()
                 }
                 Status.ERROR -> {
+                    hideLoadingView()
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
                 Status.LOADING -> {
+                    showLoadingView()
                 }
             }
         })
